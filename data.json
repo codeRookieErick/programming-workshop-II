@@ -1,0 +1,183 @@
+{
+	"colors": [
+		"#FF0000",
+		"#FF4500",
+		"#FF8C00",
+		"#FF6347",
+		"#FF1493",
+		"#FF00FF",
+		"#FF69B4",
+		"#FFD700",
+		"#FFA500",
+		"#FF0000"
+	],
+	"users": [
+		{
+			"id": "5321ae83-0ca9-4a2e-b149-502c17f87300",
+			"name": "Usuario 1",
+			"color": "#FF1493"
+		},
+		{
+			"id": "1c10a792-0e10-4420-837b-67b316144237",
+			"name": "Usuario 2",
+			"color": "#FF1493"
+		},
+		{
+			"id": "a7bad6b8-3231-4dcb-ab35-65c9a60b8fdd",
+			"name": "Usuario 3",
+			"color": "#FF8C00"
+		},
+		{
+			"id": "68643267-ee21-426d-9f6c-4bbe1b206280",
+			"name": "Usuario 4",
+			"color": "#FF6347"
+		},
+		{
+			"id": "0d5b1459-87ba-419c-8b1f-fc276377da02",
+			"name": "Usuario 5",
+			"color": "#FF6347"
+		},
+		{
+			"id": "9e395d6e-5923-49b7-9647-31f7c4cb2a3b",
+			"name": "Usuario 6",
+			"color": "#FF0000"
+		},
+		{
+			"id": "a928fa3b-a9fe-4321-98e4-62feda154000",
+			"name": "Usuario 7",
+			"color": "#FF69B4"
+		}
+	],
+	"tasks": [
+		{
+			"id": "9f17785b-cfd7-4c7f-a9fa-79bfc6fa151a",
+			"name": "Proyecto 1",
+			"creator": null,
+			"parent": null,
+			"description": null,
+			"due_date_epoch": null,
+			"user": null,
+			"completed": false,
+			"complete_date_epoch": null,
+			"assigned_date_epoch": null,
+			"history": [
+				{
+					"epoch": 1688166582,
+					"event": "Nuevo",
+					"description": "Tarea creada."
+				}
+			]
+		},
+		{
+			"id": "c9db52de-7c4a-454c-a5c4-5e5e5f56b3fd",
+			"name": "Proyeco2",
+			"creator": null,
+			"parent": null,
+			"description": null,
+			"due_date_epoch": null,
+			"user": null,
+			"completed": false,
+			"complete_date_epoch": null,
+			"assigned_date_epoch": null,
+			"history": [
+				{
+					"epoch": 1688166589,
+					"event": "Nuevo",
+					"description": "Tarea creada."
+				}
+			]
+		},
+		{
+			"id": "f785adee-a4c7-411e-953b-7796b1cf6d4d",
+			"name": "Proyecto 3",
+			"creator": null,
+			"parent": null,
+			"description": "Descripcion del proyecto",
+			"due_date_epoch": 1689206400,
+			"user": "9e395d6e-5923-49b7-9647-31f7c4cb2a3b",
+			"completed": false,
+			"complete_date_epoch": null,
+			"assigned_date_epoch": null,
+			"history": [
+				{
+					"epoch": 1688166594,
+					"event": "Nuevo",
+					"description": "Tarea creada."
+				},
+				{
+					"epoch": 1688167032,
+					"event": "Cambio",
+					"description": "Alguien ha cambiado la propiedad 'user'. Nuevo valor: 5321ae83-0ca9-4a2e-b149-502c17f87300"
+				},
+				{
+					"epoch": 1688167035,
+					"event": "Cambio",
+					"description": "Alguien ha cambiado la propiedad 'user'. Nuevo valor: a7bad6b8-3231-4dcb-ab35-65c9a60b8fdd"
+				},
+				{
+					"epoch": 1688167038,
+					"event": "Cambio",
+					"description": "Alguien ha cambiado la propiedad 'user'. Nuevo valor: 1c10a792-0e10-4420-837b-67b316144237"
+				},
+				{
+					"epoch": 1688167041,
+					"event": "Cambio",
+					"description": "Alguien ha cambiado la propiedad 'user'. Nuevo valor: 0d5b1459-87ba-419c-8b1f-fc276377da02"
+				},
+				{
+					"epoch": 1688167046,
+					"event": "Cambio",
+					"description": "Alguien ha cambiado la propiedad 'user'. Nuevo valor: 9e395d6e-5923-49b7-9647-31f7c4cb2a3b"
+				},
+				{
+					"epoch": 1688167059,
+					"event": "Cambio",
+					"description": "Alguien ha cambiado la propiedad 'due_date_epoch'. Nuevo valor: 1689206400"
+				},
+				{
+					"epoch": 1688167084,
+					"event": "Cambio",
+					"description": "Alguien ha cambiado la propiedad 'description'. Nuevo valor: Descripcion del proyecto"
+				}
+			]
+		},
+		{
+			"id": "3775344c-dd86-4055-93d0-0c779f2c52cf",
+			"name": "Crear las tareas",
+			"creator": null,
+			"parent": "f785adee-a4c7-411e-953b-7796b1cf6d4d",
+			"description": null,
+			"due_date_epoch": null,
+			"user": null,
+			"completed": false,
+			"complete_date_epoch": null,
+			"assigned_date_epoch": null,
+			"history": [
+				{
+					"epoch": 1688167023,
+					"event": "Nuevo",
+					"description": "Tarea creada."
+				}
+			]
+		},
+		{
+			"id": "f911574a-d3b9-40b0-9267-5addb0f2c69a",
+			"name": "Otra tarea",
+			"creator": null,
+			"parent": "f785adee-a4c7-411e-953b-7796b1cf6d4d",
+			"description": null,
+			"due_date_epoch": null,
+			"user": null,
+			"completed": false,
+			"complete_date_epoch": null,
+			"assigned_date_epoch": null,
+			"history": [
+				{
+					"epoch": 1688167027,
+					"event": "Nuevo",
+					"description": "Tarea creada."
+				}
+			]
+		}
+	]
+}

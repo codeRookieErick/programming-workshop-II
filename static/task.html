@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tarea</title>
+    <script src="./script/main.js"></script>
+    <script src="./script/api.js"></script>
+    <link rel="stylesheet" href="./style/main.css">
+</head>
+<body>   
+<div class="main-content">
+    <div class="left-panel">
+    </div>
+    <div class="center-panel">
+        <div class="pad-items-1">
+            <div class="card">
+                <div class="card-body">
+                    <div class="card-item">
+                        <input onchange="titleChanged()" id="title" type="text"/>
+                        <h3>Descripcion</h3>
+                        <textarea onchange="descriptionChanged()" id="description"></textarea>
+                        <h3>Responsables</h3>
+                        <div id="related-users" class="card-item">
+                            <span>Nadie</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="pad-items-1">
+            <div class="card">
+                <div class="card-header blue">
+                    <span>Subtareas</span>
+                </div>
+                <div id="tasks-list" class="card-body card-items-list">
+                </div>
+                <div class="card-footer blue">
+                    <input placeholder="Enter the new task here" type="text" id="new-task"/>
+                    <button onclick="addTask()" class="btn white">Agregar subtarea</button>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header blue">
+                    <span>Historia</span>
+                </div>
+                <div id="history-list" class="card-body card-items-list">
+                </div>
+                <div class="card-footer blue">
+                </div>
+            </div>
+        
+        </div>
+    </div>
+        <div class="right-panel">
+            <div class="pad-items-1">
+                <div class="card">
+                    <div class="card-item">
+                        <button onclick="completeClick()" class="btn green text-white">Finalizar</button>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header blue">
+                        <span>Detalles</span>
+                    </div>
+                    <div class="card-body card-items-list">
+                        <div class="card-item">
+                            <div><b>Asignado a:</b></div>
+                            <div>
+                                <select onchange="asigneeChanged()" name="asignee" id="asignee">
+                                </select>
+                            </div>
+                        </div>
+                        <div class="card-item">
+                            <div><b>Tarea padre:</b> <span id="parent-item"></span></div>
+                        </div>
+                        <div class="card-item">
+                            <div><b>Creado por:</b></div>
+                            <div id="creator-item"></div>
+                        </div>
+                        <div class="card-item">
+                            <div><b>Limite:</b></div>
+                            <div><input type="date" onchange="dueDateChanged()" id="due-date-item"></div>
+                        </div>
+                        <div class="card-item">
+                            <div><b>Completado:</b></div>
+                            <div><input type="date" disabled id="complete-date-item"></div>
+                        </div>
+                    </div>
+                    <div class="card-footer blue">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        function getTaskRender(item){
+            return `<div class="card-item"><a href="task.html?task=${item.id}">${item.name}</a></div>`;
+        }
+
+        function getHistoryItemRender(item){
+            const dateString = new Date(item.epoch);
+            const moment = getMoment(item.epoch);
+            return `
+                <div class="card-item">
+                    ${moment} - <b>${item.event}: </b> <span>${item.description}</span>
+                </div>
+                `;
+        }
+
+        function getTaskUserRender(item){
+            return `<b class="user-icon" style="background: ${item.color};"> ${item.name} </b>`;
+        }
+
+        function getParentTaskRender(item){
+            return item.parent?
+            `<a class="btn green text-white" href="task.html?task=${item.parent}">Ver</a>`:
+            "";
+        }
+
+        async function setTaskData(task){
+            const data = await getTask(task);
+            document.querySelector("#title").value = data.name;
+            document.querySelector("#description").innerHTML = data.description;
+            document.querySelector("#parent-item").innerHTML = getParentTaskRender(data);
+            document.querySelector("#creator-item").innerHTML = data.creator;
+            document.querySelector("#due-date-item").valueAsDate = 
+                data.due_date_epoch ? new Date(data.due_date_epoch * 1000) : null;
+            document.querySelector("#complete-date-item").valueAsDate = 
+                data.complete_date_epoch ? new Date(data.complete_date_epoch * 1000) : null;
+            renderInto(data.history, "#history-list", getHistoryItemRender);
+            getUsers().then(users => {
+                const select = document.querySelector("#asignee");
+                select.innerHTML = "";
+                let defaultOption = document.createElement("option");
+                defaultOption.value = "";
+                defaultOption.innerHTML = "Sin asignar";
+                defaultOption.selected = true;
+                select.appendChild(defaultOption);
+                users.forEach(i => {
+                    let option = document.createElement("option");
+                    option.value = i.id;
+                    option.innerHTML = i.name;
+                    option.selected = i.id == data.user;
+                    select.appendChild(option);
+                });
+            });
+            getUsersOfTask(task).then(users => {
+                if(users.length > 0){
+                    renderInto(users, "#related-users", getTaskUserRender, "b");
+                }else{
+                    document.querySelector("#related-users").innerHTML = `<span>Nadie</span>`;
+                }
+            });
+        }
+
+        async function loadTaskData(){
+            const {task} = getParameters();
+            getParents(task).then(t => console.log(t));
+            const children = await getChildrenTasks(task);
+            await setTaskData(task);
+            renderInto(children, "#tasks-list", getTaskRender);
+        }
+        loadTaskData();
+
+        async function addTask(){
+            const {task} = getParameters();
+            const input = document.querySelector("#new-task");
+            await createTask({name: input.value, parent: task});
+            input.value = '';
+            await loadTaskData();
+        }
+
+        async function asigneeChanged(){
+            const {task} = getParameters();
+            const user = document.querySelector("#asignee").value;
+            await setUser(task, user == ""? null: user);
+            await loadTaskData();
+        }
+
+        async function descriptionChanged(){
+            const {task} = getParameters();
+            const description = document.querySelector("#description").value;
+            await setDescription(task, description);
+            await loadTaskData();
+        }
+
+        async function titleChanged(){
+            const {task} = getParameters();
+            const title = document.querySelector("#title").value;
+            await setName(task, title);
+            await loadTaskData();
+        }
+        
+        async function dueDateChanged(){
+            const {task} = getParameters();
+            const dueDate = document.querySelector("#due-date-item").valueAsDate.getTime();
+            await setDueDate(task, parseInt(dueDate / 1000));
+            await loadTaskData();
+        }
+
+        async function completeClick(){
+            const {task} = getParameters();
+            await complete(task);
+            await loadTaskData();
+        }        
+    </script>
+</div>
+</body>
+</html>

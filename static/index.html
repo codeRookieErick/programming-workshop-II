@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todo</title>
+    <script src="./script/main.js"></script>
+    <script src="./script/api.js"></script>
+    <link rel="stylesheet" href="./style/main.css">
+</head>
+<body>
+    
+<div class="main-content">
+    <div class="left-panel">
+    </div>
+    <div class="center-panel">
+        <div class="pad-items-1">
+            <div class="card">
+                <div class="card-header blue">
+                    <span>Tareas creadas</span>
+                </div>
+                <div id="tasks-list" class="card-body card-items-list">
+                </div>
+                <div class="card-footer blue">
+                    <input placeholder="Enter the new task here" type="text" id="new-task"/>
+                    <button onclick="addTask()" class="btn white">Agregar tarea</button>
+                </div>
+            </div>
+        </div>
+    </div>
+        <div class="right-panel">
+        </div>
+    </div>
+    <script>
+
+        function getTaskRender(item){
+            return `<div class="card-item"><a href="task.html?task=${item.id}">${item.name}</a></div>`;
+        }
+
+        async function loadTasks(){
+            const tasks = await getRootTasks();
+            renderInto(tasks, "#tasks-list", getTaskRender);
+        }
+        loadTasks();
+        async function addTask(){
+            const input = document.querySelector('#new-task');
+            const task = input.value;
+            let response = await createTask({name: task});
+            await loadTasks();
+            input.value = '';
+        }
+    </script>
+</body>
+</html>
